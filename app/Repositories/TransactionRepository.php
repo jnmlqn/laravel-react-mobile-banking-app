@@ -62,18 +62,20 @@ class TransactionRepository
             throw new \Exception('Insufficient balance', 1);
         }
 
+        $newBalance = floatval($userAccount->balance) - floatval($data['amount']);
+
         Transaction::create([
             'type' => $data['type'],
             'mode' => $data['mode'],
             'bank_id' => $data['bank'] ?? null,
             'email' => $data['email'] ?? null,
             'amount' => $data['amount'],
-            'last_current_balance' => floatval($userAccount->balance),
+            'last_current_balance' => $newBalance,
             'description' => $data['description'],
             'user_id' => $userId,
         ]);
 
-        $userAccount->balance = floatval($userAccount->balance) - floatval($data['amount']);
+        $userAccount->balance = $newBalance;
         $userAccount->save();
 
         event(
