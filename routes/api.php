@@ -34,6 +34,8 @@ Route::group(
 
                 Route::post('transaction/transfer', 'App\Http\Controllers\TransactionController@transfer');
                 Route::get('transaction/history', 'App\Http\Controllers\TransactionController@history');
+
+                Route::get('banks', 'App\Http\Controllers\BankController@index');
             }
         );
     }
