@@ -48,13 +48,14 @@ class TransactionService
 
         return $histories->map(function ($history) {
             return [
+                'id' => $history->id,
                 'type' => $history->type,
                 'mode' => $history->mode,
                 'provider' => ucfirst($history->bank?->provider),
                 'bank' => $history->bank?->bank,
                 'email' => $history->email,
-                'amount' => $history->amount,
-                'last_current_balance' => $history->last_current_balance,
+                'amount' => number_format(floatval($history->amount), 2),
+                'last_current_balance' => number_format(floatval($history->last_current_balance), 2),
                 'description' => $history->description,
             ];
         })->toArray();

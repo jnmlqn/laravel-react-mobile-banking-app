@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Events\LogActivityEvent;
+use App\Models\Bank;
 use App\Models\Transaction;
 use App\Models\UserAccount;
 use Illuminate\Database\Eloquent\Collection;
@@ -30,17 +31,25 @@ class TransactionRepository
     private UserAccount $userAccount;
 
     /**
+     * @var Bank
+     */
+    private Bank $bank;
+
+    /**
      * @param  Transaction  $transaction
      * @param  UserAccount  $userAccount
+     * @param  Bank  $bank
      * 
      * @return void
      */
     public function __construct(
         Transaction $transaction,
-        UserAccount $userAccount
+        UserAccount $userAccount,
+        Bank $bank
     ) {
         $this->transaction = $transaction;
         $this->userAccount = $userAccount;
+        $this->bank = $bank;
     }
 
     /**
@@ -62,6 +71,13 @@ class TransactionRepository
             throw new \Exception('Insufficient balance', 1);
         }
 
+        if ($data['mode'] === 'bank') {
+            $bank = $this->bank->findOrFail($data['bank']);
+            $description = 'Send money to bank - ' . $bank->bank;
+        } else {
+            $description = 'Send money to user - ' . $data['email'];
+        }
+
         $newBalance = floatval($userAccount->balance) - floatval($data['amount']);
 
         Transaction::create([
@@ -71,7 +87,7 @@ class TransactionRepository
             'email' => $data['email'] ?? null,
             'amount' => $data['amount'],
             'last_current_balance' => $newBalance,
-            'description' => $data['description'],
+            'description' => $description ,
             'user_id' => $userId,
         ]);
 
@@ -99,6 +115,7 @@ class TransactionRepository
     {
         $histories = $this->transaction
             ->where('user_id', $userId)
+            ->orderBy('created_at', 'DESC')
             ->get();
 
         return $histories;

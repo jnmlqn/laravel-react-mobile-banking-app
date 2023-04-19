@@ -39,7 +39,6 @@ class TransactionController extends Controller
                     'bank' => 'required_if:mode,bank',
                     'email' => 'required_if:mode,email',
                     'amount' => 'required|numeric|min:1',
-                    'description' => 'required'
                 ]
             );
 
