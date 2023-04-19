@@ -31,6 +31,8 @@ EXPOSE 9000
 RUN chmod -R 777 storage
 RUN touch /var/www/storage/logs/laravel.log
 RUN composer install --ignore-platform-reqs
+RUN npm install
+RUN npm install laravel-mix@latest --save-dev
 RUN php artisan cache:clear
 RUN php artisan config:clear
 

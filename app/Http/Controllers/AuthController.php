@@ -107,7 +107,7 @@ class AuthController extends Controller
             'User data fetched Successfully',
             Response::HTTP_OK,
             array_merge($user->toArray(), [
-                'balance' => $user->balance
+                'balance' => number_format($user->balance, 2)
             ])
         );
     }
