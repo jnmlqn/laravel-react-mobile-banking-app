@@ -80,7 +80,7 @@ class TransactionRepository
 
         $newBalance = floatval($userAccount->balance) - floatval($data['amount']);
 
-        Transaction::create([
+        $this->transaction->create([
             'type' => $data['type'],
             'mode' => $data['mode'],
             'bank_id' => $data['bank'] ?? null,
