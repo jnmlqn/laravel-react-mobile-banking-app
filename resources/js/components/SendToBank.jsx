@@ -6,7 +6,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Select from 'react-select'
 
-class SendToUser extends React.Component {
+class SendToBank extends React.Component {
     constructor() {
         super();
         this.api = new ApiProvider;
@@ -199,4 +199,4 @@ class SendToUser extends React.Component {
     }
 }
 
-export default SendToUser;
+export default SendToBank;
